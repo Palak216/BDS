@@ -1,170 +1,149 @@
-# BDA CRM Dashboard
+# 🧠 BDA CRM (Business Development Analytics CRM)
 
-A modern, full-stack CRM (Customer Relationship Management) and Business Development Management Dashboard built for manufacturing companies. This platform enables BDA teams to track client interactions, manage sales pipelines, assign actions, monitor Kanban-style tasks, and review individual team member conversions.
-
----
-
-## Tech Stack
-- **Frontend**: React.js (via Vite), React Router DOM, Axios, Tailwind CSS, Lucide React (Icons), Recharts (Analytics charts).
-- **Backend**: Node.js, Express.js (MVC architectural pattern).
-- **Database**: MongoDB (Mongoose Object Modeling).
-- **Authentication**: JSON Web Token (JWT) with password hashing via bcryptjs.
+A modern full-stack CRM (Customer Relationship Management) and Business Development Management platform designed for manufacturing companies. It helps BDA teams manage leads, track client interactions, assign tasks, and monitor team performance with analytics dashboards.
 
 ---
 
-## Project Folder Structure
+## 🌐 Live Demo
 
-```text
-d:\BDS/
+- 🔗 Frontend: https://bds-tan.vercel.app  
+- 🔗 Backend API: https://your-render-backend-url.onrender.com  
+- 📂 GitHub: https://github.com/Palak216/BDS  
+
+---
+
+## ✨ Key Features
+
+- 🔐 Secure authentication using JWT  
+- 👥 Role-based access (Admin / User)  
+- 📊 Lead management system (CRUD + filtering)  
+- 📌 Task management with Kanban-style workflow  
+- 📈 Team performance analytics dashboard  
+- 🔎 Search & filter functionality  
+- ⚡ Responsive UI using Tailwind CSS  
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+- React.js (Vite)
+- React Router DOM
+- Axios
+- Tailwind CSS
+- Recharts
+- Lucide React
+
+### Backend
+- Node.js
+- Express.js (MVC Architecture)
+- MongoDB + Mongoose
+- JWT Authentication
+- bcrypt.js
+
+### Deployment
+- Frontend: Vercel
+- Backend: Render
+- Database: MongoDB Atlas
+
+---
+
+## 🏗 Project Architecture
+
+
+Client (React Frontend)
+↓ Axios API Calls
+Backend (Express Server)
+↓
+Controllers (Business Logic)
+↓
+Models (Mongoose Schemas)
+↓
+MongoDB Database
+
+## 📁 Folder Structure
+
+
+BDS/
 ├── backend/
-│   ├── config/             # DB Connection Config
-│   │   └── db.js
-│   ├── controllers/        # Business logic controllers
-│   │   ├── authController.js
-│   │   ├── leadController.js
-│   │   ├── taskController.js
-│   │   └── teamController.js
-│   ├── middleware/         # Auth guards and error handlers
-│   │   ├── authMiddleware.js
-│   │   └── errorMiddleware.js
-│   ├── models/             # MongoDB schemas
-│   │   ├── User.js
-│   │   ├── Lead.js
-│   │   └── Task.js
-│   ├── routes/             # Express routes mapping
-│   │   ├── authRoutes.js
-│   │   ├── leadRoutes.js
-│   │   ├── taskRoutes.js
-│   │   └── teamRoutes.js
-│   ├── .env                # Server configuration variables
-│   ├── package.json
-│   └── server.js           # Server startup script
+│ ├── config/
+│ ├── controllers/
+│ ├── middleware/
+│ ├── models/
+│ ├── routes/
+│ └── server.js
 │
 ├── frontend/
-│   ├── src/
-│   │   ├── components/     # Layout subcomponents
-│   │   │   ├── ProtectedRoute.jsx
-│   │   │   ├── Sidebar.jsx
-│   │   │   └── Navbar.jsx
-│   │   ├── layouts/        # Layout wrappers
-│   │   │   └── DashboardLayout.jsx
-│   │   ├── pages/          # Dashboard views
-│   │   │   ├── Login.jsx
-│   │   │   ├── Register.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── Leads.jsx
-│   │   │   ├── Tasks.jsx
-│   │   │   └── Team.jsx
-│   │   ├── services/       # Service client (Axios api calls)
-│   │   │   ├── api.js
-│   │   │   ├── authService.js
-│   │   │   ├── leadService.js
-│   │   │   ├── taskService.js
-│   │   │   └── teamService.js
-│   │   ├── App.jsx         # App router mapping
-│   │   ├── index.css       # Tailwind directives
-│   │   └── main.jsx
-│   ├── tailwind.config.js
-│   ├── postcss.config.js
-│   ├── package.json
-│   └── index.html
-└── README.md
+│ ├── src/
+│ │ ├── components/
+│ │ ├── pages/
+│ │ ├── services/
+│ │ └── layouts/
+│ └── main.jsx
+
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/Palak216/BDS.git
+ ```
+cd BDS
+2. Backend Setup
+cd backend
+npm install
+
+Create .env file:
+
+PORT=5000
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+NODE_ENV=development
+
+Run backend:
+
+npm start
+3. Frontend Setup
+cd frontend
+npm install
+npm run dev
+
+Frontend runs at:
 ```
+http://localhost:5173
+```
+---
+🔐 API Endpoints
+
+Authentication
+POST /api/auth/register
+POST /api/auth/login
+GET /api/auth/me
+
+Leads
+
+GET /api/leads
+POST /api/leads
+PUT /api/leads/:id
+DELETE /api/leads/:id
+
+Tasks
+
+GET /api/tasks
+POST /api/tasks
+PUT /api/tasks/:id
+DELETE /api/tasks/:id
+
+Team
+
+GET /api/team
+GET /api/team/dashboard-stats
 
 ---
-
-## Installation & Setup Instructions
-
-### 1. Database Setup
-Ensure you have **MongoDB** running locally (`mongodb://127.0.0.1:27017/bda-crm`) or set up a cloud cluster on **MongoDB Atlas**.
-
-### 2. Backend Setup
-1. Open a terminal and navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
-2. Install the backend dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure the environment variables. The `.env` file should contain:
-   ```env
-   PORT=5000
-   MONGO_URI=your_mongodb_connection_uri
-   JWT_SECRET=your_jwt_secret_key
-   NODE_ENV=development
-   ```
-4. Start the backend server in development mode:
-   ```bash
-   npm run dev
-   ```
-
-### 3. Frontend Setup
-1. Open a new terminal and navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-2. Install the frontend dependencies:
-   ```bash
-   npm install
-   ```
-3. Optional: Customize the API base URL by creating a `.env` file in the `frontend` folder:
-   ```env
-   VITE_API_URL=http://localhost:5000/api
-   ```
-4. Start the frontend Vite development server:
-   ```bash
-   npm run dev
-   ```
-5. Open your browser and go to `http://localhost:5173`.
-
----
-
-## API Routes Documentation
-
-### 1. Authentication
-* **POST** `/api/auth/register` — Register a new BDA representative. (Note: The first registered user automatically becomes an `Admin`).
-* **POST** `/api/auth/login` — Login user, returning JWT token.
-* **GET** `/api/auth/me` — Return currently authenticated user profile. (Private)
-
-### 2. Leads Management
-* **GET** `/api/leads` — Query all leads. Supports parameters: `?search=`, `?status=`, `?assignedTo=`. (Private)
-* **GET** `/api/leads/:id` — Query single lead details. (Private)
-* **POST** `/api/leads` — Create a new lead. (Private)
-* **PUT** `/api/leads/:id` — Update lead details. Only `Admin` can reassign leads. (Private)
-* **DELETE** `/api/leads/:id` — Delete a lead. (Private, `Admin` only)
-
-### 3. Task Board
-* **GET** `/api/tasks` — Retrieve all tasks. Supports parameters: `?status=`, `?assignedUser=`. (Private)
-* **POST** `/api/tasks` — Create a new task. (Private)
-* **PUT** `/api/tasks/:id` — Update task details or move status. Non-admins can only edit tasks assigned to themselves. (Private)
-* **DELETE** `/api/tasks/:id` — Delete a task. (Private)
-
-### 4. Team & Analytics
-* **GET** `/api/team` — Retrieve list of all team members along with calculated metrics (Leads count, conversion rates, pending tasks count). (Private)
-* **GET** `/api/team/dashboard-stats` — Fetch aggregate pipeline summary stats, month-on-month sales performance data, and recent pipeline activities feed. (Private)
-
----
-
-## Deployment Steps
-
-The application is structured to be fully deployment-ready.
-
-### 1. Deploying the Backend (e.g., Render, Heroku)
-1. Set up a Web Service pointing to your Git repository.
-2. Specify the root directory as `backend` or adjust your build commands:
-   * Build Command: `npm install`
-   * Start Command: `npm start`
-3. Add the required Environment Variables in the hosting dashboard:
-   * `MONGO_URI` (pointing to your MongoDB Atlas cluster)
-   * `JWT_SECRET` (a strong random token)
-   * `NODE_ENV` (`production`)
-   * `PORT` (assigned automatically by the platform, defaults to 5000)
-
-### 2. Deploying the Frontend (e.g., Vercel, Netlify)
-1. Configure a static site deployment pointing to your Git repository.
-2. Specify the root directory as `frontend` or build settings:
-   * Build Command: `npm run build`
-   * Output Directory: `dist`
-3. Set the Environment Variable:
-   * `VITE_API_URL` (pointing to your deployed backend API URL, e.g. `https://your-backend.onrender.com/api`)
+🔒 Security Features
+Password hashing using bcrypt
+JWT authentication
+Protected routes middleware
+Role-based authorization
