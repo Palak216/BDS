@@ -1,0 +1,158 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import authService from '../services/authService';
+import { UserPlus, Mail, Lock, User, Shield, AlertCircle, Loader } from 'lucide-react';
+
+const Register = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('Team Member');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authService.getCurrentUser()) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      await authService.register(name, email, password, role);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        'Registration failed. Please check the details entered.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#070a13] px-4 relative overflow-hidden">
+      {/* Decorative gradient glowing circles */}
+      <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div className="w-full max-w-md bg-slate-900/40 backdrop-blur-xl border border-slate-800 p-8 rounded-2xl shadow-2xl relative z-10">
+        <div className="text-center mb-6">
+          <div className="inline-flex p-3 bg-indigo-600/10 text-indigo-400 rounded-xl mb-4 border border-indigo-500/20">
+            <UserPlus className="w-6 h-6" />
+          </div>
+          <h2 className="text-2xl font-bold text-white tracking-tight">Create Account</h2>
+          <p className="text-slate-400 mt-2 text-sm font-light">Join the BDA manufacturing CRM platform.</p>
+        </div>
+
+        {error && (
+          <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-lg text-sm mb-6">
+            <AlertCircle className="w-4 h-4 shrink-0" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">
+              Full Name
+            </label>
+            <div className="relative">
+              <User className="w-5 h-5 text-slate-500 absolute left-3 top-3" />
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="John Doe"
+                className="w-full bg-slate-950/60 border border-slate-800 text-white pl-10 pr-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm placeholder:text-slate-600"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">
+              Email Address
+            </label>
+            <div className="relative">
+              <Mail className="w-5 h-5 text-slate-500 absolute left-3 top-3" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="john@company.com"
+                className="w-full bg-slate-950/60 border border-slate-800 text-white pl-10 pr-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm placeholder:text-slate-600"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="w-5 h-5 text-slate-500 absolute left-3 top-3" />
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Min 6 characters"
+                className="w-full bg-slate-950/60 border border-slate-800 text-white pl-10 pr-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm placeholder:text-slate-600"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-slate-300 text-xs font-semibold uppercase tracking-wider mb-1.5">
+              Role
+            </label>
+            <div className="relative">
+              <Shield className="w-5 h-5 text-slate-500 absolute left-3 top-3" />
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full bg-slate-950/60 border border-slate-800 text-white pl-10 pr-4 py-2.5 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-sm appearance-none"
+              >
+                <option value="Team Member" className="bg-slate-900 text-white">Team Member</option>
+                <option value="Admin" className="bg-slate-900 text-white">Admin</option>
+              </select>
+            </div>
+            <p className="text-[10px] text-slate-500 mt-1">Note: The very first registered user will automatically be set as Admin.</p>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 text-sm mt-6 border border-indigo-400/20 shadow-lg shadow-indigo-600/10"
+          >
+            {loading ? (
+              <>
+                <Loader className="w-4 h-4 animate-spin" />
+                Creating account...
+              </>
+            ) : (
+              'Create Account'
+            )}
+          </button>
+        </form>
+
+        <div className="text-center mt-6 text-sm text-slate-500">
+          Already have an account?{' '}
+          <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors">
+            Sign In
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
