@@ -7,7 +7,7 @@ A modern full-stack CRM (Customer Relationship Management) and Business Developm
 ## 🌐 Live Demo
 
 - 🔗 Frontend: https://bds-tan.vercel.app  
-- 🔗 Backend API: https://your-render-backend-url.onrender.com  
+
 - 📂 GitHub: https://github.com/Palak216/BDS  
 
 ---
